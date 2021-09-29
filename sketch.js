@@ -2,13 +2,15 @@ let circ;
 let running;
 var k = 1
 var start = 1
+var longest = 0
+var returnsToZero = 0
 // states = (Array(100 - prob * 100).fill(-1)).concat((Array(prob * 100).fill(1)))
 function setup() {
   canvas = createCanvas(800, 800);
   syntax = createElement("h2", "p0, Enter a function in relation to n ")
   syntax.position(20, 5)
   syntax.style("color", '#bab1b1')
-  input = createInput();
+  input = createInput("0,1/(n+1)");
   input.position(20, 65);
   button = createButton("setup")
   button.position(20, 90)
@@ -51,8 +53,11 @@ function step() {
   probFunction = new Function("n", `return ${f}`)
   k = nextStep(k, probFunction, parseFloat(p0))
   console.log(k)
+  if (k > longest) { longest = k }
   if (k == 0) {
+    returnsToZero += 1
     coordinateSytem(1)
+    start = 1
     circ = circle(333, 290, 10)
   }
   else {
@@ -83,6 +88,8 @@ function coordinateSytem(c) {
   //HORIZONTAL
   s = c
   text(0, 330, 300, 100, 100)
+  text(`Visits to Zero: ${returnsToZero}`, 450, 50, 100, 100)
+  text(`Longest Run: ${longest}`, 450, 80, 100, 100)
   for (var i = 30; i < 800; i += 30) {
     // line(i + 10, 395, i + 10, 405)
 
